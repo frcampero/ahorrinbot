@@ -1,6 +1,8 @@
 const { OpenAI } = require("openai");
 require("dotenv").config();
 
+console.log("🔑 OPENAI_API_KEY:", process.env.OPENAI_API_KEY ? "CARGADA ✅" : "VACÍA ❌");
+
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
