@@ -1,4 +1,3 @@
-require("dotenv").config();
 const { Telegraf } = require("telegraf");
 const { interpretarGasto } = require("./ai");
 const { transcribirAudio } = require("./whisper");
