@@ -1,25 +1,33 @@
-//Response for the uploaded photo
-bot.hears(/^(sí|si|no)$/i, async (ctx) => {
-  const userId = ctx.from.id;
+const Expense = require("../models/Expense");
 
-  if (!pendingConfirmations[userId]) return;
+module.exports = (bot, pendingConfirmations) => {
+  bot.on("callback_query", async (ctx) => {
+    const userId = ctx.from.id.toString();
+    const data = ctx.callbackQuery.data;
 
-  const respuesta = ctx.message.text.toLowerCase();
+    if (!pendingConfirmations[userId]) {
+      await ctx.answerCbQuery("No hay gasto pendiente.");
+      return;
+    }
 
-  if (respuesta === "sí" || respuesta === "si") {
-    const { amount, category, description } = pendingConfirmations[userId];
+    if (data === `confirm_yes_${userId}`) {
+      const { amount, category, description } = pendingConfirmations[userId];
 
-    await Expense.create({
-      userId: userId.toString(),
-      amount,
-      category,
-      description,
-    });
+      await Expense.create({
+        userId,
+        amount,
+        category,
+        description,
+      });
 
-    ctx.reply("✅ Gasto guardado correctamente.");
-  } else {
-    ctx.reply("❌ Gasto descartado.");
-  }
+      await ctx.reply("✅ Gasto guardado correctamente.");
+    } else if (data === `confirm_no_${userId}`) {
+      await ctx.reply("❌ Gasto descartado.");
+    }
 
-  delete pendingConfirmations[userId];
-});
+    delete pendingConfirmations[userId];
+
+    await ctx.answerCbQuery();           // Cierra popup en Telegram
+    await ctx.editMessageReplyMarkup();  // Elimina botones del mensaje original
+  });
+};

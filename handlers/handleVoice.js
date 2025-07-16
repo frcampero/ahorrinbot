@@ -3,7 +3,7 @@ const axios = require("axios");
 const ffmpeg = require("fluent-ffmpeg");
 const ffmpegInstaller = require("@ffmpeg-installer/ffmpeg");
 const { transcribirAudio } = require("../whisper");
-const { interpretarGasto } = require("../ai");
+const { interpretarGasto } = require("../ai/ai");
 const Expense = require("../models/Expense");
 
 ffmpeg.setFfmpegPath(ffmpegInstaller.path);

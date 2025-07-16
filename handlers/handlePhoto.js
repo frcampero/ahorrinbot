@@ -1,10 +1,11 @@
 const axios = require("axios");
+const { Markup } = require("telegraf");
 const Tesseract = require("tesseract.js");
-const { interpretarGasto } = require("../ai");
+const { interpretarGasto } = require("../ai/ai");
 
 module.exports = (bot, pendingConfirmations) => {
   bot.on("photo", async (ctx) => {
-    const userId = ctx.from.id;
+    const userId = ctx.from.id.toString();
     const photoArray = ctx.message.photo;
     const fileId = photoArray[photoArray.length - 1].file_id;
 
@@ -24,14 +25,23 @@ module.exports = (bot, pendingConfirmations) => {
       if (gasto && gasto.amount && gasto.category) {
         const { amount, category, description } = gasto;
 
-        // Guardamos temporalmente para confirmar con "sí"
+        // Guardar temporalmente
         pendingConfirmations[userId] = { amount, category, description };
 
-        ctx.reply(`📷 Gasto detectado en la imagen:
+        // Mostrar mensaje con botones
+        await ctx.reply(
+          `📷 Gasto detectado en la imagen:
 - Monto: $${amount}
 - Categoría: ${category}
 - Descripción: ${description}
-¿Querés guardarlo? Responé "sí" o "no".`);
+¿Querés guardarlo?`,
+          Markup.inlineKeyboard([
+            [
+              Markup.button.callback("✅ Sí", `confirm_yes_${userId}`),
+              Markup.button.callback("❌ No", `confirm_no_${userId}`),
+            ],
+          ])
+        );
       } else {
         ctx.reply("No logré entender el gasto en la imagen. ¿Podés intentar con otra más clara?");
       }
