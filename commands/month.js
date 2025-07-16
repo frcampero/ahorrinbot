@@ -1,7 +1,7 @@
 const Expense = require("../models/Expense");
 
 module.exports = (bot) => {
-  bot.command("month", async (ctx) => {
+  bot.command("mes", async (ctx) => {
     const args = ctx.message.text.split(" ");
     const userId = ctx.from.id.toString();
 

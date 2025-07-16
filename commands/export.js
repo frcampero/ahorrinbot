@@ -3,7 +3,7 @@ const { exportExpensesLikeCSV } = require("../utils/exportCSV");
 const fs = require("fs");
 
 module.exports = (bot) => {
-  bot.command("export", async (ctx) => {
+  bot.command("exportar", async (ctx) => {
     const userId = ctx.from.id;
     console.log("🔍 Ejecutando /export para:", userId);
 

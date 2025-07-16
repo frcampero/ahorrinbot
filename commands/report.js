@@ -2,7 +2,7 @@ const fs = require("fs");
 const { generateReportPDF } = require("../utils/generateReport");
 
 module.exports = (bot) => {
-  bot.command("report", async (ctx) => {
+  bot.command("reporte", async (ctx) => {
     const userId = ctx.from.id;
 
     try {
