@@ -14,7 +14,7 @@ const monthlyCommand = require("./commands/monthly");
 const monthCommand = require("./commands/month");
 const reportCommand = require('./commands/report');
 const textCommand = require('./commands/text')
-const confirmationHandler = require("./commands/confirmation");
+const confirmationHandler = require("./commands/confirmations");
 
 //Handlers export
 const handlePhoto = require("./handlers/handlePhoto");
